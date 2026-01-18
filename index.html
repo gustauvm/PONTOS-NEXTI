@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenador Dunamis - Nexti</title>
+    <style>
+        :root { --vermelho: #d32f2f; --vermelho-dark: #b71c1c; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        
+        .card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 400px; border-top: 8px solid var(--vermelho); }
+        h1 { color: #333; margin-bottom: 10px; font-size: 22px; }
+        p { color: #666; font-size: 14px; margin-bottom: 25px; }
+
+        .upload-area { border: 2px dashed #ccc; padding: 20px; border-radius: 10px; margin-bottom: 20px; transition: 0.3s; }
+        .upload-area:hover { border-color: var(--vermelho); }
+
+        button { background-color: var(--vermelho); color: white; border: none; padding: 15px 30px; font-size: 16px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; display: flex; justify-content: center; align-items: center; }
+        button:hover { background-color: var(--vermelho-dark); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        /* Estilo do Spinner (Rodinha de carregar) */
+        .spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; margin-left: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .status-text { display: none; margin-top: 15px; color: var(--vermelho); font-weight: bold; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Ordenador de Relatórios</h1>
+        <p>Organize o PDF único da Nexti por ordem crescente de matrícula automaticamente.</p>
+
+        <form id="uploadForm" action="/" method="post" enctype="multipart/form-data">
+            <div class="upload-area">
+                <input type="file" name="pdf_files" id="pdf_files" accept=".pdf" required>
+            </div>
+            
+            <button type="submit" id="submitBtn">
+                <span id="btnText">ORDENAR E BAIXAR</span>
+                <div id="spinner" class="spinner"></div>
+            </button>
+        </form>
+
+        <div id="statusText" class="status-text">Processando páginas... Aguarde.</div>
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const btn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
+        const statusText = document.getElementById('statusText');
+
+        form.onsubmit = function() {
+            // Desativa o botão para evitar múltiplos cliques
+            btn.disabled = true;
+            // Muda o texto e mostra o spinner
+            btnText.innerText = "PROCESSANDO...";
+            spinner.style.display = "block";
+            statusText.style.display = "block";
+        };
+
+        // Resetar o botão quando a janela focar novamente (caso o download termine ou falte algo)
+        window.onfocus = function() {
+            btn.disabled = false;
+            btnText.innerText = "ORDENAR E BAIXAR";
+            spinner.style.display = "none";
+            statusText.style.display = "none";
+        };
+    </script>
+
+</body>
+</html>
